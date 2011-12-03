@@ -3,7 +3,7 @@
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
 body { 
-  font-size: 75%;
+  font-size: 85%;
   color: #222; 
   background: #fff;
   font-family: "Helvetica Neue", Arial, Helvetica, sans-serif;
@@ -35,8 +35,7 @@ h6 { font-size: 1em; font-weight: bold; }
 
 footer {
   font-size: 50%;
-  position: absolute;
-  bottom: 0;
+  top: 5em;
   width: 100%;
   text-align: center;
 }
