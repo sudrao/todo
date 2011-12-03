@@ -11,23 +11,11 @@
     </div>
   <% end %>
 
-  <div class="field">
-    <%= f.label :title %><br />
-    <%= f.text_field :title %>
-  </div>
-  <div class="field">
-    <%= f.label :due %><br />
-    <%= f.date_select :due %>
-  </div>
-  <div class="field">
-    <%= f.label :complete %><br />
-    <%= f.check_box :complete %>
-  </div>
-  <div class="field">
-    <%= f.label :user_id %><br />
-    <%= f.number_field :user_id %>
-  </div>
-  <div class="actions">
-    <%= f.submit %>
-  </div>
+  <table id='new_task_table'>
+    <td><%= f.text_field :title %></td>
+    <td><%= f.text_field :due_string, class: 'datepicker' %></td>
+    <td><%= f.submit "Create Task" %></td>
+  </table>
+    <%= f.check_box :complete, hidden: 'true' %>
+    <%= f.number_field :user_id, hidden: 'true' %>
 <% end %>

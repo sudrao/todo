@@ -2,7 +2,10 @@ class TasksController < ApplicationController
   # GET /tasks
   # GET /tasks.json
   def index
-    @tasks = Task.all
+    @user = User.find_by_username('default')
+    @task = @user.tasks.new # For a new task to be added
+    # Pending tasks for this user
+    @tasks = @user.tasks.where(complete: false)
 
     respond_to do |format|
       format.html # index.html.erb
@@ -44,10 +47,10 @@ class TasksController < ApplicationController
 
     respond_to do |format|
       if @task.save
-        format.html { redirect_to @task, notice: 'Task was successfully created.' }
+        format.html { redirect_to action: 'index', notice: 'Todo was successfully created.' }
         format.json { render json: @task, status: :created, location: @task }
       else
-        format.html { render action: "new" }
+        format.html { redirect_to action: 'index', error: 'Sorry, the todo could not be saved' }
         format.json { render json: @task.errors, status: :unprocessable_entity }
       end
     end
@@ -60,7 +63,7 @@ class TasksController < ApplicationController
 
     respond_to do |format|
       if @task.update_attributes(params[:task])
-        format.html { redirect_to @task, notice: 'Task was successfully updated.' }
+        format.html { redirect_to @task, notice: 'Todo was successfully updated.' }
         format.json { head :ok }
       else
         format.html { render action: "edit" }
@@ -76,7 +79,7 @@ class TasksController < ApplicationController
     @task.destroy
 
     respond_to do |format|
-      format.html { redirect_to tasks_url }
+      format.html { redirect_to action: 'index', notice: 'Todo was deleted.' }
       format.json { head :ok }
     end
   end

@@ -10,6 +10,6 @@ class Task < ActiveRecord::Base
   validates_format_of :due_string, with: /\A\d{4}(-\d\d){2}\Z/
   
   def convert_due
-    due = Date.parse(due_string) if due_string
+    self.due = Date.parse(due_string)
   end
 end
