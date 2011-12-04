@@ -1,5 +1,5 @@
 <tr>
 <td><%= task.title %></td>
-<td><%= task.due %></td>
-<td><%= link_to 'Destroy', task, confirm: 'Are you sure?', method: :delete %></td>
+<td><%= task.due_date %></td>
+<td><%= link_to 'Destroy', "/tasks/#{task.id}?user_id=#{@user.id}", confirm: 'Are you sure?', method: :delete %></td>
 </tr>

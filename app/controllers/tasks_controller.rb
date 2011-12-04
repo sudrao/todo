@@ -2,10 +2,14 @@ class TasksController < ApplicationController
   # GET /tasks
   # GET /tasks.json
   def index
-    @user = User.find_by_username('default')
-    @task = @user.tasks.new # For a new task to be added
+    @user = User.find(username: 'default').first
+    unless @user
+      @user = User.create(username: 'default', fullname: 'Default User')
+    end
+    puts "User id is #{@user.id}"
+    @task = Task.new # For a new task to be added
     # Pending tasks for this user
-    @tasks = @user.tasks.where(complete: false)
+    @tasks = @user.pending.all
 
     respond_to do |format|
       format.html # index.html.erb
@@ -44,9 +48,10 @@ class TasksController < ApplicationController
   # POST /tasks.json
   def create
     @task = Task.new(params[:task])
-
+    @user = User[params[:user_id]]
+    
     respond_to do |format|
-      if @task.save
+      if @task.save && @user.pending << @task
         format.html { redirect_to action: 'index', notice: 'Todo was successfully created.' }
         format.json { render json: @task, status: :created, location: @task }
       else
@@ -75,9 +80,14 @@ class TasksController < ApplicationController
   # DELETE /tasks/1
   # DELETE /tasks/1.json
   def destroy
-    @task = Task.find(params[:id])
-    @task.destroy
-
+    @task = Task[params[:id]]
+    id = @task.id
+    @task.delete
+    # Also remove from the pending and completed lists
+    @user = User[params[:user_id]]
+    Ohm.redis.lrem(@user.pending.key, 1, id)
+    Ohm.redis.lrem(@user.completed.key, 1, id)
+    
     respond_to do |format|
       format.html { redirect_to action: 'index', notice: 'Todo was deleted.' }
       format.json { head :ok }

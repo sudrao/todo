@@ -1,15 +1,10 @@
-class Task < ActiveRecord::Base
-  belongs_to :user
-  # We get due date as a string on create
-  attr_accessor :due_string
-  # which we convert to a date object
-  before_create :convert_due
+class Task < Ohm::Model
+  attribute :title
+  attribute :due_date # YYYY-MM-DD
   
-  validates_presence_of :title
-  validates_presence_of :due_string
-  validates_format_of :due_string, with: /\A\d{4}(-\d\d){2}\Z/
-  
-  def convert_due
-    self.due = Date.parse(due_string)
+  def validate
+    assert_present :title
+    assert_present :due_date
+    assert_format :due_date, /^\d{4}(-\d\d){2}$/
   end
 end

@@ -1,4 +1,4 @@
-<%= form_for(@task) do |f| %>
+<%= form_tag(tasks_path) do %>
   <% if @task.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@task.errors.count, "error") %> prohibited this task from being saved:</h2>
@@ -12,10 +12,9 @@
   <% end %>
 
   <table id='new_task_table'>
-    <td><%= f.text_field :title %></td>
-    <td><%= f.text_field :due_string, class: 'datepicker' %></td>
-    <td><%= f.submit "Create Task" %></td>
+    <td><%= text_field_tag 'task[title]' %></td>
+    <td><%= text_field_tag 'task[due_date]', nil, class: 'datepicker' %></td>
+    <td><%= submit_tag "Create Task" %></td>
   </table>
-    <%= f.check_box :complete, hidden: 'true' %>
-    <%= f.number_field :user_id, hidden: 'true' %>
+  <%= hidden_field_tag 'user_id', @user.id %>
 <% end %>
