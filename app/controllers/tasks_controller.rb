@@ -6,10 +6,10 @@ class TasksController < ApplicationController
     unless @user
       @user = User.create(username: 'default', fullname: 'Default User')
     end
-    puts "User id is #{@user.id}"
     @task = Task.new # For a new task to be added
     # Pending tasks for this user
-    @tasks = @user.pending.all
+    @pending_tasks = @user.pending.all
+    @completed_tasks = @user.completed.all
 
     respond_to do |format|
       format.html # index.html.erb
@@ -51,7 +51,7 @@ class TasksController < ApplicationController
     @user = User[params[:user_id]]
     
     respond_to do |format|
-      if @task.save && @user.pending << @task
+      if @task.save && @user.pending.unshift(@task)
         format.html { redirect_to action: 'index', notice: 'Todo was successfully created.' }
         format.json { render json: @task, status: :created, location: @task }
       else
@@ -63,15 +63,20 @@ class TasksController < ApplicationController
 
   # PUT /tasks/1
   # PUT /tasks/1.json
+  # We get this when the user marks a todo complete
   def update
-    @task = Task.find(params[:id])
-
+    @task = Task[params[:id]]
+    @user = User[params[:user_id]]
+    # Move the todo from pending to completed list
+    Ohm.redis.lrem(@user.pending.key, 1, @task.id)
+    moved = @user.completed.unshift(@task)
+    
     respond_to do |format|
-      if @task.update_attributes(params[:task])
-        format.html { redirect_to @task, notice: 'Todo was successfully updated.' }
+      if moved
+        format.html { redirect_to action: 'index', notice: 'Todo was marked complete.' }
         format.json { head :ok }
       else
-        format.html { render action: "edit" }
+        format.html { redirect_to action: 'index', error: 'Operation failed.' }
         format.json { render json: @task.errors, status: :unprocessable_entity }
       end
     end

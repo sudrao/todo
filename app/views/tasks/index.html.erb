@@ -1,9 +1,20 @@
 <section id="content">
+	<% unless @completed %>
 	<section id="new_task">
+		<header>
+			<h3>Add a new todo</h3>
+		</header>
 		<%= render 'tasks/form'%>
 	</section>
-	<section id="task list">
+	<% end %>
+	<section id="task_list">
+		<header>
+			<h3><%= @completed ? 'Completed todos' : 'Pending todos' %></h3>
+		</header>
 		<table>
+			<th>Title</th>
+			<th>Due Date</th>
+			<th>Action</th>
 			<%= render partial: 'task', collection: @tasks %>
 		</table>
 	</section>
