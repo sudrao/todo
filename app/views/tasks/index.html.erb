@@ -1,24 +1,15 @@
-<section id="content">
-	<% unless @completed %>
-	<section id="new_task">
-		<header>
-			<h3>Add a new todo</h3>
-		</header>
-		<%= render 'tasks/form'%>
-	</section>
-	<% end %>
-	<section id="task_list">
-		<header>
-			<h3><%= @completed ? 'Completed todos' : 'Pending todos' %></h3>
-		</header>
-		<table>
-			<th>Title</th>
-			<th>Due Date</th>
-			<th>Action</th>
-			<%= render partial: 'task', collection: @tasks %>
-		</table>
-	</section>
-</section>
+<div id="tabs">
+	<ul>
+		<li><a href="#tabs-1">Pending Todos</a></li>
+		<li><a href="#tabs-2">Complete Todos</a></li>
+	</ul>
+	<div id="tabs-1">
+		<%= render partial: "list", locals: { completed: false } %>
+	</div>
+	<div id="tabs-2">
+		<%= render partial: "list", locals: { completed: true } %>
+	</div>
+</div>
 
 <section hidden="true">
 	Requirements:

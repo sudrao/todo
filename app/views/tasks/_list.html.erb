@@ -1,0 +1,14 @@
+<section id="task_list">
+  <table>
+	<th>Title</th>
+	<th>Due Date</th>
+	<th>Action</th>
+  <% unless completed %>
+	<%= render 'tasks/form'%>
+    <% tasks = @pending_tasks %>
+  <% else %>
+    <% tasks = @completed_tasks %>
+  <% end %>
+	<%= render partial: 'task', collection: tasks, locals: {completed: completed} %>
+  </table>
+</section>

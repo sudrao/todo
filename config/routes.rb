@@ -8,5 +8,5 @@ Todo::Application.routes.draw do
   # Display only routes for pending/completed tasks
   resource :pending, :completed
     
-  root :to => 'pendings#show'
+  root :to => 'tasks#index'
 end

@@ -1,7 +1,7 @@
 <tr>
 <td><%= task.title %></td>
 <td><%= task.due_date %></td>
-<% if @completed %>
+<% if completed %>
   <td><%= link_to 'Destroy', "/tasks/#{task.id}?user_id=#{@user.id}", confirm: 'Are you sure?', method: :delete %></td>
 <% else %>
   <td><%= link_to 'Mark Complete', "/tasks/#{task.id}?user_id=#{@user.id}", method: :put %></td>
