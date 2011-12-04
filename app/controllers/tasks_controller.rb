@@ -64,16 +64,28 @@ class TasksController < ApplicationController
   # PUT /tasks/1
   # PUT /tasks/1.json
   # We get this when the user marks a todo complete
+  # or wants to move it up or down in the pending list
   def update
     @task = Task[params[:id]]
     @user = User[params[:user_id]]
-    # Move the todo from pending to completed list
-    Ohm.redis.lrem(@user.pending.key, 1, @task.id)
-    moved = @user.completed.unshift(@task)
+    pending_key = @user.pending.key
+    # Remove from pending list and move it as instructed
+    Ohm.redis.lrem(pending_key, 1, @task.id)
+
+    case params[:do]
+    when 'done'
+      # Move the todo from pending to completed list
+      updated = @user.completed.unshift(@task)
+    when 'down'
+      # Move it after the pivot
+      updated = Ohm.redis.linsert(pending_key, :after, params[:pivot], @task.id)
+    when 'up'
+      updated = Ohm.redis.linsert(pending_key, :before, params[:pivot], @task.id)
+    end
     
     respond_to do |format|
-      if moved
-        format.html { redirect_to action: 'index', notice: 'Todo was marked complete.' }
+      if updated
+        format.html { redirect_to action: 'index', notice: 'Todo was updated.' }
         format.json { head :ok }
       else
         format.html { redirect_to action: 'index', error: 'Operation failed.' }

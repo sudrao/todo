@@ -1,5 +1,6 @@
 <section id="task_list">
   <table>
+	<th></th>
 	<th>Title</th>
 	<th>Due Date</th>
 	<th>Action</th>
@@ -9,6 +10,10 @@
   <% else %>
     <% tasks = @completed_tasks %>
   <% end %>
-	<%= render partial: 'task', collection: tasks, locals: {completed: completed} %>
+	<% prev = nil %>
+	<% tasks.length.times do |i| %>
+		<%= render partial: 'task', locals: {task: tasks[i], completed: completed, prev: prev, after: tasks[i+1] } %>
+		<% prev = tasks[i] %>
+	<% end %>
   </table>
 </section>
