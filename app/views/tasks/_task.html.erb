@@ -5,7 +5,7 @@
 <% if completed %>
 	<td>
 	<%= link_to '<span class="ui-icon ui-icon-circle-check" title="Unmark Complete"></span>'.html_safe, "/tasks/#{task.id}?user_id=#{@user.id}&do=undo", method: :put, class: 'fg-button ui-state-default fg-button-icon-solo ui-corner-all ui-priority-primary' %>
-	<%= link_to '<span class="ui-icon ui-icon-trash" title="Destroy"></span>'.html_safe, "/tasks/#{task.id}?user_id=#{@user.id}", confirm: 'Are you sure?', method: :delete, class: "fg-button ui-state-default ui-corner-all ui-priority-secondary" %></td>
+	<%= link_to '<span class="ui-icon ui-icon-trash" title="Destroy"></span>'.html_safe, "/tasks/#{task.id}?user_id=#{@user.id}", confirm: 'Are you sure?', method: :delete, class: "fg-button ui-state-default fg-button-icon-solo ui-corner-all ui-priority-secondary" %></td>
 <% else %>
 	<td>
 	<div class="fg-buttonset fg-buttonset-multi">

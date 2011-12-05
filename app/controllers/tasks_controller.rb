@@ -9,7 +9,15 @@ class TasksController < ApplicationController
     @task = Task.new # For a new task to be added
     # Pending tasks for this user
     @pending_tasks = @user.pending.all
-    @completed_tasks = @user.completed.all
+    @completed_tasks = @user.completed[0, 50] # limit to first 50
+    
+    # Select pending or completed tab on view
+    if session[:current_tab]
+      @initial_tab = session[:current_tab]
+    else
+      @initial_tab = 0
+      session[:current_tab] = 0
+    end
 
     respond_to do |format|
       format.html # index.html.erb
@@ -20,7 +28,7 @@ class TasksController < ApplicationController
   # GET /tasks/1
   # GET /tasks/1.json
   def show
-    @task = Task.find(params[:id])
+    @task = Task[params[:id]]
 
     respond_to do |format|
       format.html # show.html.erb
@@ -41,7 +49,7 @@ class TasksController < ApplicationController
 
   # GET /tasks/1/edit
   def edit
-    @task = Task.find(params[:id])
+    @task = Task[params[:id]]
   end
 
   # POST /tasks
@@ -49,6 +57,7 @@ class TasksController < ApplicationController
   def create
     @task = Task.new(params[:task])
     @user = User[params[:user_id]]
+    session[:current_tab] = 0
     
     respond_to do |format|
       if @task.save && @user.pending.unshift(@task)
@@ -69,7 +78,8 @@ class TasksController < ApplicationController
     @task = Task[params[:id]]
     @user = User[params[:user_id]]
     pending_key = @user.pending.key
-
+    session[:current_tab] = 0 # default
+    
     case params[:do]
     when 'done'
       # Move the todo from pending to completed list
@@ -78,7 +88,8 @@ class TasksController < ApplicationController
     when 'undo'
       # Move back to pending
       Ohm.redis.lrem(@user.completed.key, 1, @task.id)
-      updated = @user.pending.unshift(@task)      
+      updated = @user.pending.unshift(@task)
+      session[:current_tab] = 1   
     when 'down'
       Ohm.redis.lrem(pending_key, 1, @task.id)
       # Move it after the pivot
@@ -109,6 +120,7 @@ class TasksController < ApplicationController
     @user = User[params[:user_id]]
     Ohm.redis.lrem(@user.pending.key, 1, id)
     Ohm.redis.lrem(@user.completed.key, 1, id)
+    session[:current_tab] = 1
     
     respond_to do |format|
       format.html { redirect_to action: 'index', notice: 'Todo was deleted.' }

@@ -2,7 +2,8 @@
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://jashkenas.github.com/coffee-script/
 $(document).ready ->
-  $("#tabs").tabs()
+  initial_tab = parseInt($('#initial-tab-select').text())
+  $("#tabs").tabs(selected: initial_tab)
   $('.datepicker').datepicker(dateFormat: 'yy-mm-dd')
   # hover and click logic for todo buttons
   $(".fg-button:not(.ui-state-disabled)")
