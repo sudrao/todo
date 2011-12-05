@@ -69,17 +69,22 @@ class TasksController < ApplicationController
     @task = Task[params[:id]]
     @user = User[params[:user_id]]
     pending_key = @user.pending.key
-    # Remove from pending list and move it as instructed
-    Ohm.redis.lrem(pending_key, 1, @task.id)
 
     case params[:do]
     when 'done'
       # Move the todo from pending to completed list
+      Ohm.redis.lrem(pending_key, 1, @task.id)
       updated = @user.completed.unshift(@task)
+    when 'undo'
+      # Move back to pending
+      Ohm.redis.lrem(@user.completed.key, 1, @task.id)
+      updated = @user.pending.unshift(@task)      
     when 'down'
+      Ohm.redis.lrem(pending_key, 1, @task.id)
       # Move it after the pivot
       updated = Ohm.redis.linsert(pending_key, :after, params[:pivot], @task.id)
     when 'up'
+      Ohm.redis.lrem(pending_key, 1, @task.id)
       updated = Ohm.redis.linsert(pending_key, :before, params[:pivot], @task.id)
     end
     

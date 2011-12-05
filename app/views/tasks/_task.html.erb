@@ -3,12 +3,16 @@
 	<td><%= task.title %></td>
 	<td><%= task.due_date %></td>
 <% if completed %>
-	<td><%= link_to 'Destroy', "/tasks/#{task.id}?user_id=#{@user.id}", confirm: 'Are you sure?', method: :delete %></td>
+	<td>
+	<%= link_to '<span class="ui-icon ui-icon-circle-check" title="Unmark Complete"></span>'.html_safe, "/tasks/#{task.id}?user_id=#{@user.id}&do=undo", method: :put, class: 'fg-button ui-state-default fg-button-icon-solo ui-corner-all ui-priority-primary' %>
+	<%= link_to '<span class="ui-icon ui-icon-trash" title="Destroy"></span>'.html_safe, "/tasks/#{task.id}?user_id=#{@user.id}", confirm: 'Are you sure?', method: :delete, class: "fg-button ui-state-default ui-corner-all ui-priority-secondary" %></td>
 <% else %>
 	<td>
-	<%= link_to '<span class="ui-icon ui-icon-check">Mark Complete</span>'.html_safe, "/tasks/#{task.id}?user_id=#{@user.id}&do=done", method: :put, class: 'fg-button ui-state-default ui-corner-all ui-priority-primary' %>
-	<%= link_to('<span class="ui-icon ui-icon-arrowthick-1-n">Move Up</span>'.html_safe, "/tasks/#{task.id}?user_id=#{@user.id}&do=up&pivot=#{prev.id}", method: :put, class: 'fg-button ui-state-default ui-corner-all ui-priority-primary') if prev %>
-	<%= link_to('<span class="ui-icon ui-icon-arrowthick-1-s">Move Down</span>'.html_safe, "/tasks/#{task.id}?user_id=#{@user.id}&do=down&pivot=#{after.id}", method: :put, class: 'fg-button ui-state-default ui-corner-all ui-priority-primary') if after %>
+	<div class="fg-buttonset fg-buttonset-multi">
+	<%= link_to '<span class="ui-icon ui-icon-check" title="Mark Complete"></span>'.html_safe, "/tasks/#{task.id}?user_id=#{@user.id}&do=done", method: :put, class: 'fg-button ui-state-default fg-button-icon-solo ui-corner-all ui-priority-primary' %>
+	<%= link_to('<span class="ui-icon ui-icon-arrowthick-1-n" title="Move Up"></span>'.html_safe, "/tasks/#{task.id}?user_id=#{@user.id}&do=up&pivot=#{prev.id}", method: :put, class: 'fg-button ui-state-default fg-button-icon-solo ui-corner-all ui-priority-secondary') if prev %>
+	<%= link_to('<span class="ui-icon ui-icon-arrowthick-1-s" title="Move Down"></span>'.html_safe, "/tasks/#{task.id}?user_id=#{@user.id}&do=down&pivot=#{after.id}", method: :put, class: 'fg-button ui-state-default fg-button-icon-solo ui-corner-all ui-priority-secondary') if after %>
+	</div>
 	</td>
 <% end %>
 </tr>

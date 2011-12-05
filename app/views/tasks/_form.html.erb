@@ -15,7 +15,7 @@
 	  <td>New Todo</td>
       <td><%= text_field_tag 'task[title]' %></td>
       <td><%= text_field_tag 'task[due_date]', nil, class: 'datepicker' %></td>
-      <td><%= submit_tag "Create Todo" %></td>
+      <td><%= submit_tag "Create Todo", class: "fg-button ui-state-default ui-corner-all" %></td>
     </tr>
   <%= hidden_field_tag 'user_id', @user.id %>
 <% end %>
