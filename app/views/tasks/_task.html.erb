@@ -1,12 +1,13 @@
 <tr>
 	<td></td>
 	<td><%= task.title %></td>
-	<td><%= task.due_date %></td>
-<% if completed %>
+	<% if completed %>
+	<td><%= task.finish_date %></td>
 	<td>
 	<%= link_to '<span class="ui-icon ui-icon-circle-check" title="Unmark Complete"></span>'.html_safe, "/tasks/#{task.id}?user_id=#{@user.id}&do=undo", method: :put, class: 'fg-button ui-state-default fg-button-icon-solo ui-corner-all ui-priority-primary' %>
 	<%= link_to '<span class="ui-icon ui-icon-trash" title="Destroy"></span>'.html_safe, "/tasks/#{task.id}?user_id=#{@user.id}", confirm: 'Are you sure?', method: :delete, class: "fg-button ui-state-default fg-button-icon-solo ui-corner-all ui-priority-secondary" %></td>
 <% else %>
+<td><%= task.due_date %></td>
 	<td>
 	<div class="fg-buttonset fg-buttonset-multi">
 	<%= link_to '<span class="ui-icon ui-icon-check" title="Mark Complete"></span>'.html_safe, "/tasks/#{task.id}?user_id=#{@user.id}&do=done", method: :put, class: 'fg-button ui-state-default fg-button-icon-solo ui-corner-all ui-priority-primary' %>

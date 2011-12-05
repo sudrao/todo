@@ -82,6 +82,9 @@ class TasksController < ApplicationController
     
     case params[:do]
     when 'done'
+      # Set finish date
+      @task.finish_date = Date.today.iso8601
+      @task.save
       # Move the todo from pending to completed list
       Ohm.redis.lrem(pending_key, 1, @task.id)
       updated = @user.completed.unshift(@task)

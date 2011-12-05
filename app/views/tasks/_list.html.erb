@@ -2,7 +2,7 @@
   <table>
 	<th></th>
 	<th>Title</th>
-	<th>Due Date</th>
+	<th><%= completed ? 'Finish Date' : 'Due Date' %></th>
 	<th>Action</th>
   <% unless completed %>
 	<%= render 'tasks/form'%>
