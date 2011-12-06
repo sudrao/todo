@@ -1,4 +1,5 @@
 class TasksController < ApplicationController
+  PAGE_SIZE = 3
   # GET /tasks
   # GET /tasks.json
   def index
@@ -9,14 +10,17 @@ class TasksController < ApplicationController
     @task = Task.new # For a new task to be added
     # Pending tasks for this user
     @pending_tasks = @user.pending.all
-    @completed_tasks = @user.completed[0, 50] # limit to first 50
-    
+    # We paginate completed tasks as the list could be long
+    @completed_tasks, @page, @next_page = @user.get_completed_page(params, PAGE_SIZE)
     # Select pending or completed tab on view
-    if session[:current_tab]
+    if params[:page]
+      # Only completed tab has pagination
+      @initial_tab = session[:current_tab] = 1
+    elsif session[:current_tab]
       @initial_tab = session[:current_tab]
     else
-      @initial_tab = 0
-      session[:current_tab] = 0
+      # Default
+      @initial_tab = session[:current_tab] = 0
     end
 
     respond_to do |format|

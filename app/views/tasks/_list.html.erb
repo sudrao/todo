@@ -15,5 +15,17 @@
 		<%= render partial: 'task', locals: {task: tasks[i], completed: completed, prev: prev, after: tasks[i+1] } %>
 		<% prev = tasks[i] %>
 	<% end %>
+	<tr><td></td>
+	<td>
+  <% if @page && completed # a previous page exists %>
+	<%= link_to 'Back', "/tasks?page=#{@page-1}", class: "fg-button ui-state-default ui-corner-all"  %>
+  <% end %>
+    </td><td></td>
+    <td>
+  <% if @next_page && completed # a next page exists %>
+	<%= link_to 'More...', "/tasks?page=#{@next_page}", class: "fg-button ui-state-default ui-corner-all"  %>
+  <% end %>
+	</td>
+	</tr>
   </table>
 </section>
