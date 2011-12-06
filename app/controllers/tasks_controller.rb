@@ -1,5 +1,5 @@
 class TasksController < ApplicationController
-  PAGE_SIZE = 3
+  PAGE_SIZE = 25
   # GET /tasks
   # GET /tasks.json
   def index

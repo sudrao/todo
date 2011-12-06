@@ -7,6 +7,7 @@ html, body {
 }
 
 $body_color: #222;
+$overdue_color: red;
 
 body { 
   font-size: 85%;
@@ -46,6 +47,10 @@ footer {
   color: change-color($body_color, $lightness: 40%);
 }
 
+.overdue {
+	color: $overdue_color;
+}
+
 /* Jquery buttons */
 
 .fg-button { 
@@ -57,28 +62,20 @@ footer {
    position: relative; 
    text-align: center; 
    zoom: 1; 
+   .ui-icon { position: absolute; top: 50%; margin-top: -8px; left: 50%; margin-left: -8px; }
+   .fg-buttonset-single, 
+   .fg-buttonset-multi { margin-right: -1px;}
+   .fg-buttonset { float: left; }
+   .fg-toolbar { font-size: 1em;  }
    }
-
-.fg-button .ui-icon { position: absolute; top: 50%; margin-top: -8px; left: 50%; margin-left: -8px; }
 
 a.fg-button { float:left; }
 
-.fg-button-icon-left { padding-left: 2.1em; }
-.fg-button-icon-right { padding-right: 2.1em; }
-.fg-button-icon-left .ui-icon { right: auto; left: .2em; margin-left: 0; }
-.fg-button-icon-right .ui-icon { left: auto; right: .2em; margin-left: 0; }
+.fg-button-icon-left { padding-left: 2.1em; .ui-icon { right: auto; left: .2em; margin-left: 0; } }
+.fg-button-icon-right { padding-right: 2.1em; .ui-icon { left: auto; right: .2em; margin-left: 0; } }
 	
 .fg-button-icon-solo { display:block; width:8px; text-indent: -9999px; }	 /* solo icon buttons must have block properties for the text-indent to work */	
 	
 .fg-buttonset { float:left; }
-.fg-buttonset .fg-button { float: left; }
-.fg-buttonset-single .fg-button, 
-.fg-buttonset-multi .fg-button { margin-right: -1px;}
 	
-.fg-toolbar { padding: .5em; margin: 0;  }
-.fg-toolbar .fg-buttonset { margin-right:1.5em; padding-left: 1px; }
-.fg-toolbar .fg-button { font-size: 1em;  }
-
-.fg-toolbar { padding: .5em; margin: 0; }
-.fg-toolbar .fg-buttonset { margin-right:1.5em; padding-left: 1px; }
-.fg-toolbar .fg-button { font-size: 1em;  }
+.fg-toolbar { padding: .5em; margin: 0; .fg-buttonset { margin-right:1.5em; padding-left: 1px; } }
