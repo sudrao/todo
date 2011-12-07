@@ -8,10 +8,10 @@
 	<%= link_to del_span, task_user_path(task, @user), confirm: 'Are you sure?', method: :delete, class: button_class_sy,  title: "Destroy" %></td>
 <% else %>
 <% due = Date.parse(task.due_date) %>
-<% if due < Date.today %>
-<td class="overdue"><%= d_out(due) %></td>
-<% elsif due == Date.today %>
+<% if task.due_date == Date.today.iso8601 %>
 <td><%= "Today  (#{d_out(due)})" %>
+<% elsif due < Date.today %>
+<td class="overdue"><%= d_out(due) %></td>
 <% else %>
 <td><%= "#{d_days(task.due_date)} (#{d_out(due)})" %></td>
 <% end %>
