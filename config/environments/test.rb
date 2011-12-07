@@ -36,4 +36,8 @@ Todo::Application.configure do
 
   # Print deprecation notices to the stderr
   config.active_support.deprecation = :stderr
+  
+  # Redis URL
+  ENV["REDISTOGO_URL"] = 'redis://localhost:6378'
+  
 end
