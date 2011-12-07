@@ -8,5 +8,3 @@ log/
 .rvm*
 *.tmproj
 cache/
-application-*
-*.gz
