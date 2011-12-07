@@ -7,3 +7,6 @@ log/
 .sass-cache/
 .rvm*
 *.tmproj
+cache/
+application-*
+*.gz
