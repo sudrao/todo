@@ -7,7 +7,7 @@ if vcap = ENV['VCAP_SERVICES']
   Ohm.connect(redis_conf)
   $redis = Ohm.redis
 elsif Rails.env.production?
-  redis_conf = {:db => 1, :host => 'todonew.heroku.com', :port => 6379}
+  redis_conf = {:db => 1, :host => 'todonew.herokuapp.com', :port => 6379}
   Ohm.connect(redis_conf)
   $redis = Ohm.redis
 else  
